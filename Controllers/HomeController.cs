@@ -18,15 +18,42 @@ namespace H1B_Viz.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Requirements()
         {
             return View();
         }
+
+        public IActionResult LCApp()
+        {
+            return View();
+        }
+
+        public IActionResult Visualization()
+        {
+            return View();
+        }
+
+        public IActionResult NewDataForm()
+        {
+            return View();
+        }
+
+        public IActionResult InquiryForm()
+        {
+            return View();
+        }
+
 
         public IActionResult AboutUs()
         {
             return View();
         }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
