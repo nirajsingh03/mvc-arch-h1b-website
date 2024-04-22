@@ -1,0 +1,19 @@
+/* Global styles */
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7; /* Updated background color */
+}
+
+.content {
+    background-color: #fff;
+    color: #333;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 10px;
+}
+
+/* Responsive icon */
+

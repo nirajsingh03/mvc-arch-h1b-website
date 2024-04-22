@@ -1,6 +1,175 @@
 ﻿@{
     ViewData["Title"] = "New Data Form";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="~/css/header.css">
+    <link rel="stylesheet" type="text/css" href="~/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="~/css/AddRecordCSS.css">
+    <link rel="stylesheet" type="text/css" href="~/css/AboutUS.css">
+    <title>New Data Form</title>
+</head>
+<body>
+<div class="container">
+    <button type="add" onclick="displayForm()"> Missing H1B Data?</button>
+    <div class="row" id="form" style="display: none;">
+        <div class="col-md-12">
+            <!-- <form action="AddRecord.html" method="post"> -->
+            <div id="divForm">
+                <h1> Data Form </h1>
+
+                <fieldset>
+
+                    <legend><span class="number">1</span> Your Company Info</legend>
+
+                    <input type="number" id="id" name="user_id" style="display:none">
+                    <label for="name">Company Name:</label>
+                    <input type="text" id="name" name="user_name">
+
+                    <label for="city"> City:</label>
+                    <input type="text" id="city" name="user_email">
+
+
+                </fieldset>
+                <fieldset>
+
+                    <legend><span class="number">2</span> Information</legend>
+
+                    <label for="year">Year:</label>
+                    <input type="number" id="year_id" name="year_id">
+
+                    <label for="approvals">Approvals:</label>
+                    <input type="number" id="approval_id" name="approval_id">
+
+                    <label for="denails">Denials:</label>
+                    <input type="number" id="den_id" name="den_id">
+                </fieldset>
+
+                    <button type="submit" id="submit" onclick="submitForm()">Submit</button>
+
+            </div>
+            <!-- </form> -->
+        </div>
+    </div>
+    <table id="tableContent">
+        <thead>
+            <tr class="table-headers">
+                <th>Company Name</th>
+                <th>City</th>
+                <th>Year</th>
+                <th>Approvals</th>
+                <th>Denials</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+<div class="center" id="myCenter" style="display:flex;justify-content: space-around;">
+    <a>copyrights@2024</a>
+</div>
+
+
+
+
+
+<script>
+    var li = [];
+    function myFunction() {
+        var a = document.getElementById("myCenter");
+        if (a.className === "center") {
+            a.className += " responsive";
+        } else {
+            a.className = "center";
+        }
+    }
+    function displayForm() {
+        console.log("in Displaying form")
+        var form = document.getElementById("form");
+        form.style.display = "block";
+        var table = document.getElementById("tableContent");
+        table.style.display = "none";
+    }
+    function submitForm() {
+        console.log("in submitting form")
+        var form = document.getElementById("form");
+        form.style.display = "none";
+        var table = document.getElementById("tableContent");
+        table.style.display = "block";
+        const id = document.getElementById("id").value;
+        const name = document.getElementById("name").value;
+        const city = document.getElementById("city").value;
+
+        const year = document.getElementById("year_id").value;
+        const approvals = document.getElementById("approval_id").value;
+        const denials = document.getElementById("den_id").value;
+
+        // console.log(name);
+        // console.log(email);
+        // console.log(description);
+        const jsonFormat = {
+            "id": li.length + 100, "name": name, "city": city,
+            "year": year, "approvals": approvals, "denials": denials
+        };
+        if (!id) {
+            li.push(jsonFormat)
+            console.log(li);
+            let row = `<tr id=${jsonFormat.id}>
+                    <td>${jsonFormat.name}</td>
+                    <td>${jsonFormat.city}</td>
+                    <td>${jsonFormat.year}</td>
+                    <td>${jsonFormat.approvals}</td>
+                    <td>${jsonFormat.denials}</td>
+                    <td><button onclick="editFunction(${jsonFormat.id},'${jsonFormat.name}','${jsonFormat.city}',
+                        ${jsonFormat.year}, ${jsonFormat.approvals}, ${jsonFormat.denials})">
+                        Edit</button>
+                        <button onclick="deleteFunction(${jsonFormat.id})">
+                        Delete</button>
+                    </td>
+
+                </tr>`;
+            table.innerHTML += row;
+        }
+        else {
+            const rowData = document.getElementById(id);
+            var cells = rowData.getElementsByTagName('td');
+            cells[0].innerHTML = name;
+            cells[1].innerHTML = city;
+            cells[2].innerHTML = year;
+            cells[3].innerHTML = approvals;
+            cells[4].innerHTML = denials;
+
+
+        }
+        document.getElementById("id").value = null;
+        document.getElementById("name").value = "";
+        document.getElementById("city").value = "";
+        document.getElementById("year_id").value = "";
+        document.getElementById("approval_id").value = "";
+        document.getElementById("den_id").value = "";
+
+
+
+    }
+    function editFunction(id, name, city, year, approvals, denials) {
+        document.getElementById("id").value = id;
+        document.getElementById("name").value = name;
+        document.getElementById("city").value = city;
+        document.getElementById("year_id").value = year;
+        document.getElementById("approval_id").value = approvals;
+        document.getElementById("den_id").value = denials;
+        displayForm();
+    }
+    function deleteFunction(id) {
+        var row = document.getElementById(id);
+        if (row) {
+            row.remove();
+        }
+
+    }
+</script>
+</body>

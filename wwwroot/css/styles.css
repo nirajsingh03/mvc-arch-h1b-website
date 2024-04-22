@@ -1,0 +1,33 @@
+﻿/* Global styles */
+
+
+body, html {
+    height: 100%;
+    font-family: sans-serif;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Rest of your CSS styles go here */
+
+
+
+
+
+
+/* Content */
+.content {
+    background-color: #fff; /* Updated background color */
+    color: white; /* Updated font color */
+    font-size:16px;
+    font-weight: bold;
+    padding: 20px;
+    height: 480px;
+    background-image: url("https://hrwatchdog.calchamber.com/wp-content/uploads/H-1B-Visa.jpg");
+    margin: 20px;
+    border-radius: 10px;
+    
+}
+
+
+

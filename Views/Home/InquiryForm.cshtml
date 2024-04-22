@@ -1,6 +1,138 @@
 ﻿@{
     ViewData["Title"] = "Inquiry Form";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="~/css/header.css">
+    <link rel="stylesheet" type="text/css" href="~/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="~/css/AddRecordCSS.css">
+    <link rel="stylesheet" type="text/css" href="~/css/AboutUS.css">
+    <title>Inquiry Form</title>
+</head>
+<body>
+    
+    <div class="container">
+        <button type="add" onclick="displayForm()">Add an Inquiry</button>
+        <div class="row" id="form" style="display: none;">
+            <div class="col-md-12">
+                <!-- <form action="AddRecord.html" method="post"> -->
+                <div id="divForm">
+                    <h1> Inquiry </h1>
+
+                    <fieldset>
+
+                        <legend><span class="number">1</span> Your Basic Info</legend>
+                        <input type="number" id="id" name="user_id" style="display:none">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="user_name">
+
+                        <label for="email">Email:</label>
+                        <input type="email" id="mail" name="user_email">
+
+                        <legend><span class="number">2</span> Information</legend>
+
+                        <label for="bio">Message:</label>
+                        <textarea id="bio" name="user_bio"></textarea>
+                     </fieldset>
+
+
+                        <button type="submit" id="submit" onclick="submitForm()"> Submit </button>
+                </div>
+                <!-- </form> -->
+            </div>
+        </div>
+        <table id="tableContent">
+            <thead>
+                <tr class="table-headers">
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Message</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        var li = [];
+        function myFunction() {
+            var a = document.getElementById("myCenter");
+            if (a.className === "center") {
+                a.className += " responsive";
+            } else {
+                a.className = "center";
+            }
+        }
+        function displayForm() {
+            console.log("in Displaying form")
+            var form = document.getElementById("form");
+            form.style.display = "block";
+            var table = document.getElementById("tableContent");
+            table.style.display = "none";
+        }
+        function submitForm() {
+            console.log("in submitting form")
+            var form = document.getElementById("form");
+            form.style.display = "none";
+            var table = document.getElementById("tableContent");
+            table.style.display = "block";
+            const id = document.getElementById("id").value;
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("mail").value;
+            const description = document.getElementById("bio").value;
+            console.log(name);
+            console.log(email);
+            console.log(description);
+            const jsonFormat = { "id": li.length + 100, "name": name, "email": email, "description": description };
+            if (!id) {
+                li.push(jsonFormat)
+                console.log(li);
+                let row = `<tr id=${jsonFormat.id}>
+                        <td>${jsonFormat.name}</td>
+                        <td>${jsonFormat.email}</td>
+                        <td>${jsonFormat.description}</td>
+                        <td><button onclick="editFunction(${jsonFormat.id},
+                            '${jsonFormat.name}','${jsonFormat.email}','${jsonFormat.description}')">
+                            Edit</button>
+                            <button onclick="deleteFunction(${jsonFormat.id})">
+                            Delete</button>
+                        </td>
+
+                    </tr>`;
+                table.innerHTML += row;
+            }
+            else {
+                const rowData = document.getElementById(id);
+                var cells = rowData.getElementsByTagName('td');
+                cells[0].innerHTML = name;
+                cells[1].innerHTML = email;
+                cells[2].innerHTML = description;
+
+            }
+            document.getElementById("id").value = null;
+            document.getElementById("name").value = "";
+            document.getElementById("mail").value = "";
+            document.getElementById("bio").value = "";
+
+
+        }
+        function editFunction(id, name, email, description) {
+            document.getElementById("id").value = id;
+            document.getElementById("name").value = name;
+            document.getElementById("mail").value = email;
+            document.getElementById("bio").value = description;
+            displayForm();
+        }
+        function deleteFunction(id) {
+            var row = document.getElementById(id);
+            if (row) {
+                row.remove();
+            }
+
+        }
+    </script>
+</body>
