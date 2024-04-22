@@ -1,6 +1,219 @@
 ﻿@{
-    ViewData["Title"] = "Visualization";
+    ViewData["Title"] = "H1B Petitions Data Visualization";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="~/css/header.css">
+    <link rel="stylesheet" href="~/css/SIMStyles.css">
+    <link rel="stylesheet" href="~/css/AboutUS.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>H1B Petitions Data Visualization</title>
+    <style>
+        .chart-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+            .chart-container > div {
+                margin: 20px;
+                width: 800px;
+            }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="main-heading">H1B Petitions Data Visualization</h1>
+        <div class="chart-container">
+            <div>
+                <h2>Trends in H1B Petitions Over Years</h2>
+                <canvas id="trendsChart"></canvas>
+            </div>
+            <div>
+                <h2>Top 10 Employers Filing H1B Petitions</h2>
+                <canvas id="employersChart"></canvas>
+            </div>
+            <div>
+                <h2>Average Continuing Approvals and Denials by NAICS Sector</h2>
+                <canvas id="sectorsChart"></canvas>
+            </div>
+            <div>
+                <h2>Distribution of H1B Petitions by State</h2>
+                <canvas id="statesChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <script src="~/js/header.js"></script>
+    <script>
+        Papa.parse("/Dataset/h1b_data_og.csv", {
+            download: true,
+            header: true,
+            dynamicTyping: true,
+            skipEmptyLines: true,
+            complete: function (results) {
+                const data = results.data;
+
+                // Data for the Trends Chart
+                let years = [...new Set(data.map(row => row['Fiscal Year']))].sort();
+                let approvalsData = {};
+                let denialsData = {};
+                data.forEach(row => {
+                    approvalsData[row['Fiscal Year']] = (approvalsData[row['Fiscal Year']] || 0) + row['Initial Approvals'] + row['Continuing Approvals'];
+                    denialsData[row['Fiscal Year']] = (denialsData[row['Fiscal Year']] || 0) + row['Initial Denials'] + row['Continuing Denials'];
+                });
+                let trendsData = {
+                    labels: years,
+                    datasets: [
+                        {
+                            label: 'Total Approvals',
+                            data: years.map(year => approvalsData[year]),
+                            borderColor: '#4CAF50',
+                            fill: false
+                        },
+                        {
+                            label: 'Total Denials',
+                            data: years.map(year => denialsData[year]),
+                            borderColor: '#F44336',
+                            fill: false
+                        }
+                    ]
+                };
+                new Chart(document.getElementById('trendsChart').getContext('2d'), {
+                    type: 'line',
+                    data: trendsData,
+                    options: {
+                        maintainAspectRatio: true,
+                        title: {
+                            display: true,
+                            fontStyle: 'bold',
+                            fontSize: 18
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    callback: function(value, index, values) {
+                                        return value.toLocaleString();
+                                    }
+                                }
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                    callback: function(value, index, values) {
+                                        return value; // Return the full year value
+                                    }
+                                }
+                            }]
+                        }
+                    }
+                });
+
+                // Data for the Employers Chart
+                let employerCounts = {};
+                data.forEach(row => {
+                    employerCounts[row['Employer']] = (employerCounts[row['Employer']] || 0) + 1;
+                });
+                let topEmployers = Object.keys(employerCounts).sort((a, b) => employerCounts[b] - employerCounts[a]).slice(0, 10);
+                let employersData = {
+                    labels: topEmployers,
+                    datasets: [{
+                        label: 'Number of Petitions by Employer',
+                        data: topEmployers.map(employer => employerCounts[employer]),
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#9B59B6', '#E7E9ED', '#34495E', '#16A085', '#27AE60', '#2980B9', '#8E44AD']
+                    }]
+                };
+                new Chart(document.getElementById('employersChart').getContext('2d'), {
+                    type: 'doughnut',
+                    data: employersData,
+                    options: {
+                        title: {
+                            display: true,
+                            fontStyle: 'bold',
+                            fontSize: 18
+                        },
+                        layout: {
+                            padding: {
+                                top: 20,
+                                bottom: 20
+                            }
+                        }
+                    }
+                });
+
+                // Data for the NAICS Sectors Chart
+                let sectorCounts = {};
+                data.forEach(row => {
+                    sectorCounts[row['NAICS_Sector']] = (sectorCounts[row['NAICS_Sector']] || 0) + row['Continuing Approvals'] + row['Continuing Denials'];
+                });
+                let sectorsData = {
+                    labels: Object.keys(sectorCounts),
+                    datasets: [{
+                        label: 'Average Continuing Petitions by Sector',
+                        data: Object.values(sectorCounts),
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#9B59B6', '#E7E9ED']
+                    }]
+                };
+                new Chart(document.getElementById('sectorsChart').getContext('2d'), {
+                    type: 'bar',
+                    data: sectorsData,
+                    options: {
+                        title: {
+                            display: true,
+                            fontStyle: 'bold',
+                            fontSize: 18
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    callback: function(value, index, values) {
+                                        return value.toLocaleString();
+                                    }
+                                }
+                            }]
+                        }
+                    }
+                });
+
+                // Data for the States Chart
+                let stateCounts = {};
+                data.forEach(row => {
+                    stateCounts[row['State']] = (stateCounts[row['State']] || 0) + 1;
+                });
+                let statesData = {
+                    labels: Object.keys(stateCounts),
+                    datasets: [{
+                        label: 'Number of Petitions by State',
+                        data: Object.values(stateCounts),
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#9B59B6', '#E7E9ED', '#34495E', '#16A085', '#27AE60', '#2980B9', '#8E44AD']
+                    }]
+                };
+                new Chart(document.getElementById('statesChart').getContext('2d'), {
+                    type: 'pie',
+                    data: statesData,
+                    options: {
+                        title: {
+                            display: true,
+                            fontStyle: 'bold',
+                            fontSize: 18
+                        },
+                        layout: {
+                            padding: {
+                                top: 20,
+                                bottom: 20
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
