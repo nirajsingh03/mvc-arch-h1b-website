@@ -22,36 +22,18 @@
             </h2>
         </div>
 
-        <nav class="center navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Requirements">Basic Requirements</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LCApp">Labour Condition Application</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Visualization">Visualization</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AboutUs">About Us</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="NewDataForm">New Data Form</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="InquiryForm">Inquiry Form</a>
-                        </li>
-
-                    </ul>
-                </div>
-            </div>
+        <nav class="center navbar-expand-sm navbar-toggleable-sm navbar-dark bg-black border-bottom box-shadow mb-3">
+        <div class="center container-fluid" id="myCenter">
+            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="LCApp">Labour Condition Application</a>
+            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Visualization">Visualization</a>
+            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="AboutUs">About Us</a>
+            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="NewDataForm">New Data Form</a>
+            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="InquiryForm">Inquiry Form</a>
+            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                <i class="fa fa-bars"></i>
+            </a>
+        </div>
         </nav>
     </header>
     <div class="container">
@@ -61,8 +43,11 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container" id="myCenter" style="display:flex;justify-content: space-around;">
-            &copy; 2024 - H1B Visa Petition Information <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy Notice</a>
+        <div class="center" id="myCenter" style="display:flex;justify-content: space-around;">
+            <p class="text-light">
+                &copy; 2024 - H1B Visa Petition Information
+
+            </p>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

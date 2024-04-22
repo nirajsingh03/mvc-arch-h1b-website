@@ -70,6 +70,44 @@
     </table>
 </div>
 <script>
+        // Function to generate dummy data
+        function generateDummyData(numRows) {
+            var data = [];
+            for (var i = 1; i <= numRows; i++) {
+                data.push({
+                    companyName: "Company " + i,
+                    city: "City " + i,
+                    year: Math.floor(Math.random() * (2024 - 2015 + 1)) + 2015, // Random year between 2015 and 2024
+                    approvals: Math.floor(Math.random() * 100), // Random number of approvals
+                    denials: Math.floor(Math.random() * 20) // Random number of denials
+                });
+            }
+            return data;
+        }
+
+        // Function to add rows to the table
+        function addRowsToTable(data) {
+            var tbody = document.querySelector("#tableContent tbody");
+            data.forEach(function (entry) {
+                var row = document.createElement("tr");
+                row.innerHTML = `
+                        <td>${entry.companyName}</td>
+                        <td>${entry.city}</td>
+                        <td>${entry.year}</td>
+                        <td>${entry.approvals}</td>
+                        <td>${entry.denials}</td>
+                        <td></td>`;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Generate 30 rows of dummy data
+        var dummyData = generateDummyData(25);
+
+        // Add dummy data to the table
+        addRowsToTable(dummyData);
+
+    // show user data
     var li = [];
     function myFunction() {
         var a = document.getElementById("myCenter");

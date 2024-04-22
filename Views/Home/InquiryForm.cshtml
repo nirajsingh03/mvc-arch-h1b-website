@@ -58,6 +58,42 @@
     </div>
 
     <script>
+
+        // Function to generate dummy data for contact/inquiry form
+        function generateDummyData(numRows) {
+            var data = [];
+            for (var i = 1; i <= numRows; i++) {
+                data.push({
+                    name: "User " + i,
+                    email: "user" + i + "[at]example.com",
+                    message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                });
+            }
+            return data;
+        }
+
+        // Function to add rows to the table
+        function addRowsToTable(data) {
+            var tbody = document.querySelector("#tableContent tbody");
+            data.forEach(function (entry) {
+                var row = document.createElement("tr");
+                row.innerHTML = `
+                        <td>${entry.name}</td>
+                        <td>${entry.email}</td>
+                        <td>${entry.message}</td>
+                        <td></td>`;
+
+                tbody.appendChild(row);
+            });
+        }
+
+        // Generate dummy data for the contact/inquiry form
+        var dummyData = generateDummyData(10); // Generating 30 rows of dummy data
+
+        // Add dummy data to the table
+        addRowsToTable(dummyData);
+
+        // live user data
         var li = [];
         function myFunction() {
             var a = document.getElementById("myCenter");
